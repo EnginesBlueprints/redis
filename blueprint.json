@@ -15,12 +15,23 @@
         "level": "alpha",
         "patch": 0
       }
-    }
+    },
+    "timestamp": "2019-08-23T10:07:47+10:00"
   },
   "software": {
     "base": {
-      "deployment_type": "web",
-      "http_protocol": "https_and_http"
+      "name": "redis",
+      "framework": "base_c",
+      "deployment_type": "worker",
+      "http_protocol": "https_and_http",
+      "memory": {
+        "required": 1024
+      }
+    },
+    "scripts": {
+      "install": {
+        "content": "#!/bin/sh\r\ncd /home/.home_dir/\r\nwget http://download.redis.io/redis-stable.tar.gz\r\ntar xvzf redis-stable.tar.gz\r\ncd redis-stable\r\nmake\r\nmake install\r\ncd ..\r\nrm -r redis-stable redis-stable.tar.gz\r\n\r\n"
+      }
     }
   }
 }
