@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-08-23T10:07:47+10:00"
+    "timestamp": "2019-08-23T12:12:36+10:00"
   },
   "software": {
     "base": {
@@ -29,9 +29,30 @@
       }
     },
     "scripts": {
+      "start": {
+        "language": "sh",
+        "content": "#!/bin/sh\r\nPID_FILE=/home/engines/run/redis.pid\r\nexport PID_FILE\r\n. /home/engines/functions/trap.sh\r\ncd /home/app/\r\n\r\nredis-server \r\n \r\n sleep 3600 &\r\n echo $? > /tmp/$PID_FILE\r\n \r\n startup_complete\r\n wait\r\n shutdown_complete"
+      },
       "install": {
+        "language": "sh",
         "content": "#!/bin/sh\r\ncd /home/.home_dir/\r\nwget http://download.redis.io/redis-stable.tar.gz\r\ntar xvzf redis-stable.tar.gz\r\ncd redis-stable\r\nmake\r\nmake install\r\ncd ..\r\nrm -r redis-stable redis-stable.tar.gz\r\n\r\n"
       }
-    }
+    },
+    "service_configurations": [
+      {
+        "publisher_namespace": "EnginesSystem",
+        "type_path": "filesystem/local/filesystem",
+        "variables": {
+          "service_name": "_Engines_Builder(engine_name)",
+          "volume_src": "",
+          "engine_path": "/home/fs/redis_store",
+          "permissions": "rw",
+          "user": "_Engines_Builder(cont_user_id)",
+          "group": "_Engines_Builder(data_gid)",
+          "fw_user": "_Engines_Builder(cont_user_id)",
+          "exclude_from_backup": "false"
+        }
+      }
+    ]
   }
 }
