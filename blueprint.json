@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-08-23T14:09:54+10:00"
+    "timestamp": "2019-08-23T14:34:51+10:00"
   },
   "software": {
     "base": {
@@ -38,7 +38,7 @@
         "content": "#!/bin/sh\r\ncd /home/home_dir/\r\nwget http://download.redis.io/redis-stable.tar.gz\r\ntar xvzf redis-stable.tar.gz\r\ncd redis-stable\r\nmake\r\nmake install\r\ncd ..\r\nrm -r redis-stable redis-stable.tar.gz\r\n\r\n"
       },
       "first_run": {
-        "content": "#!/bin/sh\r\n\r\nsecret=`cat /home/.secrets/$CONTAINER_NAME`\r\n\r\ncat /home/engines/templates/home/app/redis.conf | sed \"/ENGINES_SECRET/s//$secret/\" > /home/app/redis.conf"
+        "content": "#!/bin/sh\r\n\r\nsecret=`cat /home/.secrets/$CONTAINER_NAME`\r\n\r\ncat /home/engines/templates/app/redis.conf | sed \"/ENGINES_SECRET/s//$secret/\" > /home/app/redis.conf"
       }
     },
     "service_configurations": [
