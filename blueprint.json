@@ -16,7 +16,7 @@
         "patch": 0
       }
     },
-    "timestamp": "2019-08-23T14:34:51+10:00"
+    "timestamp": "2019-08-25T12:28:08+10:00"
   },
   "software": {
     "base": {
@@ -31,7 +31,7 @@
     "scripts": {
       "start": {
         "language": "sh",
-        "content": "#!/bin/sh\r\nPID_FILE=/home/engines/run/redis.pid\r\nexport PID_FILE\r\n. /home/engines/functions/trap.sh\r\ncd /home/app/\r\n\r\nredis-server /home/app/redis.conf \r\n \r\n sleep 3600 &\r\n echo $? > /tmp/$PID_FILE\r\n \r\n startup_complete\r\n wait\r\n shutdown_complete"
+        "content": "#!/bin/sh\r\nPID_FILE=/home/engines/run/redis.pid\r\nexport PID_FILE\r\n. /home/engines/functions/trap.sh\r\ncd /home/app/\r\n\r\nredis-server /home/app/redis.conf &\r\n \r\necho $! > /tmp/$PID_FILE\r\n \r\nstartup_complete\r\nwait\r\nshutdown_complete"
       },
       "install": {
         "language": "sh",
@@ -61,7 +61,9 @@
         "type_path": "secrets",
         "variables": {
           "secret_name": "_Engines_Builder(engine_name)",
-          "is_secret": "true"
+          "is_secret": "true",
+          "length": "32",
+          "mutable": "false"
         }
       }
     ],
@@ -74,6 +76,16 @@
     "file_write_permissions": [
       {
         "path": "/home/app/redis.conf"
+      }
+    ],
+    "actionators": [
+      {
+        "name": "show_redis_cred",
+        "label": "Redis Credential",
+        "return_type": "plain_text",
+        "script": {
+          "content": "#!/bin/sh\r\ncat /home/.secrets/$CONTAINER_NAME\r\n"
+        }
       }
     ]
   }
